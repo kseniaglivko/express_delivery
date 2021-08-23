@@ -35,5 +35,6 @@ delivery_id_type = constr(regex="^[a-z0-9]{2,5}$")
 
 class Delivery(BaseModel):
     """Класс для валидации тела запроса."""
+
     id: str
     status: Set[delivery_id_type]
