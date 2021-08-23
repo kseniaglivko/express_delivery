@@ -1,9 +1,9 @@
+"""Модуль для работы с базой данных."""
+from typing import Set
+from pydantic import BaseModel, constr
 from sqlalchemy import create_engine, Column, String, Table, MetaData
 from sqlalchemy_utils.types.choice import ChoiceType
-from typing import List
 import databases
-from fastapi import FastAPI
-from pydantic import BaseModel
 
 DATABASE_URL = "postgresql://dbuser:dbpassword@localhost/express_delivery"
 
@@ -11,10 +11,11 @@ database = databases.Database(DATABASE_URL)
 
 metadata = MetaData()
 
+# Таблица с информацией о заказах на доставку.
 deliveries = Table(
     "deliveries",
     metadata,
-    Column("id", String(5), primary_key=True),
+    Column("id", String(5), primary_key=True, index=True),
     Column(
         "status",
         ChoiceType(
@@ -25,40 +26,14 @@ deliveries = Table(
     ),
 )
 
-
-engine = create_engine(
-    DATABASE_URL, connect_args={"check_same_thread": False}
-)
+engine = create_engine(DATABASE_URL)
 
 metadata.create_all(engine)
 
+delivery_id_type = constr(regex="^[a-z0-9]{2,5}$")
+
 
 class Delivery(BaseModel):
+    """Класс для валидации тела запроса."""
     id: str
-    status: str
-
-
-app = FastAPI()
-
-
-@app.on_event("startup")
-async def startup():
-    await database.connect()
-
-
-@app.on_event("shutdown")
-async def shutdown():
-    await database.disconnect()
-
-
-@app.get("/deliveries/", response_model=List[Delivery])
-async def read_db():
-    query = deliveries.select()
-    return await database.fetch_all(query)
-
-
-@app.post("/deliveries/", response_model=Delivery)
-async def update_db(del_: Delivery):
-    query = deliveries.insert().values(text=del_.id, status=del_.status)
-    last_record_id = await database.execute(query)
-    return {**del_.dict(), "id": last_record_id}
+    status: Set[delivery_id_type]
