@@ -1,0 +1,15 @@
+language: python
+python: 3.9
+
+
+before_install:
+  - python -m pip install --upgrade pip
+  - pip install pre-commit
+
+install:
+  - pip install -r requirements.txt
+  - pip install -r tox_requirements.txt
+
+script:
+  - pre-commit run --all-files
+  - tox
