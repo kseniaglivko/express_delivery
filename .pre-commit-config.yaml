@@ -8,9 +8,10 @@ repos:
     rev: v2.2.3
     hooks:
     - id: trailing-whitespace
+      - exclude: README.md
     - id: check-json
     - id: check-merge-conflict
     - id: check-yaml
     - id: debug-statements
     - id: end-of-file-fixer
-      exclude: requirements.txt, README.md
+      - exclude: requirements.txt
