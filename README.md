@@ -1,3 +1,5 @@
+[![Build Status](https://app.travis-ci.com/kseniaglivko/express_delivery.svg?branch=main)](https://app.travis-ci.com/kseniaglivko/express_delivery)
+
 # ЭкспрессКурьер
 
 ## Описание
