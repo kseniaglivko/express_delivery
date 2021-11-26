@@ -17,7 +17,8 @@ deliveries = Table(
     "deliveries",
     metadata,
     Column("id", String(5), primary_key=True, index=True),
-    Column("status", String(11), comment="Status"))
+    Column("status", String(11), comment="Status"),
+)
 
 engine = create_engine(DATABASE_URL)
 

@@ -56,4 +56,3 @@ async def fetch_db() -> None:
     records = await database.fetch_all(query=query)
     for entry in records:
         print(dict(entry.items()))
-
