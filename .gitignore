@@ -1,5 +1,5 @@
 .idea/
 __pycache__/
 venv/
-tox.ini
-tox_requirements.txt
+.tox
+.mypy_cache
